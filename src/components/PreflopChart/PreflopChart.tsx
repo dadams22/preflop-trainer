@@ -2,8 +2,11 @@ import {Box, Center, MantineColor, SimpleGrid} from "@mantine/core";
 import classes from './PreflopChart.module.css';
 import {useState} from "react";
 import {CARD_RANKS, PREFLOP_ACTION_COLORS, PreflopAction} from "@/consts";
+import {produce} from "immer";
 
-interface ComponentProps {}
+interface ComponentProps {
+    selectedPreflopAction: PreflopAction;
+}
 
 function createPreflopActionMatrix(): PreflopAction[][] {
     const dimension = CARD_RANKS.length;
@@ -14,8 +17,17 @@ function createPreflopActionMatrix(): PreflopAction[][] {
     return array;
 }
 
-export default function PreflopChart({}: ComponentProps) {
+export default function PreflopChart({ selectedPreflopAction }: ComponentProps) {
     const [currentSelections, setCurrentSelections] = useState(createPreflopActionMatrix());
+    console.log(JSON.stringify(currentSelections));
+
+    const handleClickSquare = (row: number, col: number) => () =>  {
+        setCurrentSelections(
+            produce(currentSelections, (draft) => {
+                draft[row][col] = selectedPreflopAction;
+            })
+        );
+    };
 
     return (
         <SimpleGrid w={700} h={700} cols={CARD_RANKS.length} spacing={0}>
@@ -31,7 +43,13 @@ export default function PreflopChart({}: ComponentProps) {
                     const color = PREFLOP_ACTION_COLORS[selectedAction];
 
                     return (
-                        <Center color={selectedAction !== PreflopAction.Fold ? 'white' : undefined} bg={color} p="xs" className={classes.square}>{label}</Center>
+                        <Center
+                            onClick={handleClickSquare(row, col)}
+                            color={selectedAction !== PreflopAction.Fold ? 'white' : undefined}
+                            bg={color} p="xs" className={classes.square}
+                        >
+                            {label}
+                        </Center>
                     );
                 })
             ))}

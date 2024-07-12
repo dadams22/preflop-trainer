@@ -15,7 +15,7 @@ export const POSITIONS = [
 export const CARD_RANKS = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
 
 export enum PreflopAction {
-    Fold = 'Fold',
+    Fold = 'FOLD',
     Call = 'CALL',
     Raise = 'RAISE',
     ThreeBetBluff = 'THREE_BET_BLUFF',

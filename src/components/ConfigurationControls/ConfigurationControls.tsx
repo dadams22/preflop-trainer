@@ -8,13 +8,14 @@ const POSSIBLE_ACTIONS: PreflopAction[] = [
     PreflopAction.Raise,
 ];
 
-interface ComponentProps {}
+interface ComponentProps {
+    selectedPreflopAction: PreflopAction;
+    onSelectPreflopAction: (selectedPreflopAction: PreflopAction) => void;
+}
 
-export default function ConfigurationControls({}: ComponentProps) {
-    const [selectedPreflopAction, setSelectedPreflopAction] = useState<PreflopAction>(PreflopAction.Fold);
-
+export default function ConfigurationControls({ selectedPreflopAction, onSelectPreflopAction }: ComponentProps) {
     const handleClickPreflopActionCard = (action: PreflopAction) => () => {
-        setSelectedPreflopAction(action);
+        onSelectPreflopAction(action);
     };
 
     return (
