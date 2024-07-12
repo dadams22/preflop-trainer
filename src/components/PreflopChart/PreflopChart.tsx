@@ -79,7 +79,7 @@ export default function PreflopChart({ selectedPreflopAction, solution }: Compon
               bd={
                 correctAction && selectedAction !== correctAction
                   ? `2px solid ${PREFLOP_ACTION_COLORS[correctAction]}.6`
-                  : '2px solid gray.2'
+                  : '2px solid gray.6'
               }
             >
               {label}
