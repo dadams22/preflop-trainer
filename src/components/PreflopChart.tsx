@@ -6,7 +6,7 @@ const CARD_RANKS = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', 
 
 export default function PreflopChart({}: ComponentProps) {
     return (
-        <SimpleGrid cols={CARD_RANKS.length}>
+        <SimpleGrid w={700} h={700} cols={CARD_RANKS.length}>
             {CARD_RANKS.map((rank1, row) => (
                 CARD_RANKS.map((rank2, col) => {
                     const label = row === col ? (
