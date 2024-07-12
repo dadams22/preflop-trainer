@@ -18,10 +18,18 @@ function createPreflopActionMatrix(): PreflopAction[][] {
 }
 
 export default function PreflopChart({ selectedPreflopAction }: ComponentProps) {
-    const [currentSelections, setCurrentSelections] = useState(createPreflopActionMatrix());
-    console.log(JSON.stringify(currentSelections));
+    const [currentSelections, setCurrentSelections] = useState<PreflopAction[][]>(createPreflopActionMatrix());
+    const [dragging, setDragging] = useState<boolean>(false);
 
-    const handleClickSquare = (row: number, col: number) => () =>  {
+    const handleMouseDown = () => {
+        setDragging(true);
+    };
+
+    const handleMouseUp = () => {
+        setDragging(false);
+    };
+
+    const handleSelectSquare = (row: number, col: number) => () =>  {
         setCurrentSelections(
             produce(currentSelections, (draft) => {
                 draft[row][col] = selectedPreflopAction;
@@ -29,8 +37,19 @@ export default function PreflopChart({ selectedPreflopAction }: ComponentProps) 
         );
     };
 
+    const handleMouseOver = (row: number, col: number) => () => {
+        if (dragging) handleSelectSquare(row, col)();
+    };
+
     return (
-        <SimpleGrid w={700} h={700} cols={CARD_RANKS.length} spacing={0}>
+        <SimpleGrid
+            w={700}
+            h={700}
+            cols={CARD_RANKS.length}
+            spacing={0}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+        >
             {CARD_RANKS.map((rank1, row) => (
                 CARD_RANKS.map((rank2, col) => {
                     const label = row === col ? (
@@ -44,9 +63,13 @@ export default function PreflopChart({ selectedPreflopAction }: ComponentProps) 
 
                     return (
                         <Center
-                            onClick={handleClickSquare(row, col)}
+                            onClick={handleSelectSquare(row, col)}
+                            onMouseOver={handleMouseOver(row, col)}
+                            onMouseDown={handleSelectSquare(row, col)}
                             color={selectedAction !== PreflopAction.Fold ? 'white' : undefined}
-                            bg={color} p="xs" className={classes.square}
+                            bg={color}
+                            p="xs"
+                            className={classes.square}
                         >
                             {label}
                         </Center>
