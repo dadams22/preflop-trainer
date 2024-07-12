@@ -22,6 +22,7 @@ export default function PreflopChart({ selectedPreflopAction }: ComponentProps) 
     createPreflopActionMatrix()
   );
   const [dragging, setDragging] = useState<boolean>(false);
+  console.log(JSON.stringify(currentSelections));
 
   const handleMouseDown = () => {
     setDragging(true);
