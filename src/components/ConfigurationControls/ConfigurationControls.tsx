@@ -1,8 +1,13 @@
-import {Select, Stack} from '@mantine/core';
-import {POSITIONS, PreflopAction} from '@/consts';
+import { Select, Stack } from '@mantine/core';
+import { POSITIONS, PreflopAction } from '@/consts';
 import PreflopActionCard from '@/components/ConfigurationControls/components/PreflopActionCard';
 
-const POSSIBLE_ACTIONS: PreflopAction[] = [PreflopAction.Fold, PreflopAction.Call, PreflopAction.Raise, PreflopAction.RaiseAsBluff];
+const POSSIBLE_ACTIONS: PreflopAction[] = [
+  PreflopAction.Fold,
+  PreflopAction.Call,
+  PreflopAction.Raise,
+  PreflopAction.RaiseAsBluff,
+];
 
 interface ComponentProps {
   selectedPreflopAction: PreflopAction;
