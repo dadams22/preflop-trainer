@@ -30,7 +30,7 @@ export function HomePage() {
               ))}
               {referenceChart && <Switch label="Show solution" checked={checkSolution} onChange={(e) => setCheckSolution(e.target.checked)} />}
           </Stack>
-        <PreflopChart selectedPreflopAction={selectedPreflopAction} />
+        <PreflopChart selectedPreflopAction={selectedPreflopAction} solution={checkSolution ? referenceChart : undefined} />
       </Group>
     </Center>
   );

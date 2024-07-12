@@ -4,10 +4,6 @@ import { useState } from 'react';
 import { CARD_RANKS, PREFLOP_ACTION_COLORS, PreflopAction } from '@/consts';
 import { produce } from 'immer';
 
-interface ComponentProps {
-  selectedPreflopAction: PreflopAction;
-}
-
 function createPreflopActionMatrix(): PreflopAction[][] {
   const dimension = CARD_RANKS.length;
   const array: any[][] = new Array(dimension);
@@ -17,12 +13,17 @@ function createPreflopActionMatrix(): PreflopAction[][] {
   return array;
 }
 
-export default function PreflopChart({ selectedPreflopAction }: ComponentProps) {
+interface ComponentProps {
+  selectedPreflopAction: PreflopAction;
+  solution?: PreflopAction[][];
+}
+
+export default function PreflopChart({ selectedPreflopAction, solution }: ComponentProps) {
   const [currentSelections, setCurrentSelections] = useState<PreflopAction[][]>(
     createPreflopActionMatrix()
   );
   const [dragging, setDragging] = useState<boolean>(false);
-  console.log(JSON.stringify(currentSelections));
+  console.log(JSON.stringify(solution));
 
   const handleMouseDown = () => {
     setDragging(true);
@@ -64,9 +65,10 @@ export default function PreflopChart({ selectedPreflopAction }: ComponentProps) 
 
           const selectedAction = currentSelections[row][col];
           const color = PREFLOP_ACTION_COLORS[selectedAction];
+          const correctAction = solution ? solution[row][col] : undefined;
 
           return (
-            <Center
+            <Box
               onClick={handleSelectSquare(row, col)}
               onMouseOver={handleMouseOver(row, col)}
               onMouseDown={handleSelectSquare(row, col)}
@@ -74,9 +76,10 @@ export default function PreflopChart({ selectedPreflopAction }: ComponentProps) 
               bg={color}
               p="xs"
               className={classes.square}
+              bd={correctAction && selectedAction !== correctAction ? `2px solid ${PREFLOP_ACTION_COLORS[correctAction]}.6` : '2px solid gray.2'}
             >
               {label}
-            </Center>
+            </Box>
           );
         })
       )}
