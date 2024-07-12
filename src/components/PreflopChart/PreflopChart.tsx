@@ -76,7 +76,11 @@ export default function PreflopChart({ selectedPreflopAction, solution }: Compon
               bg={color}
               p="xs"
               className={classes.square}
-              bd={correctAction && selectedAction !== correctAction ? `2px solid ${PREFLOP_ACTION_COLORS[correctAction]}.6` : '2px solid gray.2'}
+              bd={
+                correctAction && selectedAction !== correctAction
+                  ? `2px solid ${PREFLOP_ACTION_COLORS[correctAction]}.6`
+                  : '2px solid gray.2'
+              }
             >
               {label}
             </Box>
