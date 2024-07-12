@@ -1,0 +1,9 @@
+.square {
+    cursor: pointer;
+
+    border: 1px solid var(--mantine-color-gray-2);
+
+    &:hover {
+        background-color: var(--mantine-color-dark-6);
+    }
+}

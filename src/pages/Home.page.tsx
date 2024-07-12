@@ -1,12 +1,14 @@
-import { Welcome } from '../components/Welcome/Welcome';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
-import PreflopChart from "@/components/PreflopChart";
-import {Center} from "@mantine/core";
+import PreflopChart from "@/components/PreflopChart/PreflopChart";
+import {Center, Group, Stack} from "@mantine/core";
+import ConfigurationControls from "@/components/ConfigurationControls/ConfigurationControls";
 
 export function HomePage() {
   return (
-    <Center>
-      <PreflopChart />
+    <Center mih="100vh">
+        <Group align="flex-start">
+            <ConfigurationControls />
+            <PreflopChart />
+        </Group>
     </Center>
   );
 }
