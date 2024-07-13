@@ -4,26 +4,20 @@ import { useState } from 'react';
 import { CARD_RANKS, PREFLOP_ACTION_COLORS, PreflopAction } from '@/consts';
 import { produce } from 'immer';
 
-function createPreflopActionMatrix(): PreflopAction[][] {
-  const dimension = CARD_RANKS.length;
-  const array: any[][] = new Array(dimension);
-  for (let i = 0; i < dimension; i++) {
-    array[i] = new Array(dimension).fill(PreflopAction.Fold);
-  }
-  return array;
-}
-
 interface ComponentProps {
+  preflopMatrix: PreflopAction[][];
+  onChange: (matrix: PreflopAction[][]) => void;
   selectedPreflopAction: PreflopAction;
   solution?: PreflopAction[][];
 }
 
-export default function PreflopChart({ selectedPreflopAction, solution }: ComponentProps) {
-  const [currentSelections, setCurrentSelections] = useState<PreflopAction[][]>(
-    createPreflopActionMatrix()
-  );
+export default function PreflopChart({
+  preflopMatrix,
+  onChange,
+  selectedPreflopAction,
+  solution,
+}: ComponentProps) {
   const [dragging, setDragging] = useState<boolean>(false);
-  console.log(JSON.stringify(solution));
 
   const handleMouseDown = () => {
     setDragging(true);
@@ -34,8 +28,8 @@ export default function PreflopChart({ selectedPreflopAction, solution }: Compon
   };
 
   const handleSelectSquare = (row: number, col: number) => () => {
-    setCurrentSelections(
-      produce(currentSelections, (draft) => {
+    onChange(
+      produce(preflopMatrix, (draft) => {
         draft[row][col] = selectedPreflopAction;
       })
     );
@@ -50,7 +44,7 @@ export default function PreflopChart({ selectedPreflopAction, solution }: Compon
       w={700}
       h={700}
       cols={CARD_RANKS.length}
-      spacing={0}
+      spacing={2}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
@@ -63,7 +57,7 @@ export default function PreflopChart({ selectedPreflopAction, solution }: Compon
                 ? `${rank2}${rank1}o`
                 : `${rank1}${rank2}s`;
 
-          const selectedAction = currentSelections[row][col];
+          const selectedAction = preflopMatrix[row][col];
           const color = PREFLOP_ACTION_COLORS[selectedAction];
           const correctAction = solution ? solution[row][col] : undefined;
 

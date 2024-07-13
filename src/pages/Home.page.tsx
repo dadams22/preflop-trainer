@@ -1,20 +1,35 @@
 import PreflopChart from '@/components/PreflopChart/PreflopChart';
-import { Center, Group, Select, Stack, Switch } from '@mantine/core';
+import { Button, Center, Group, Select, Stack, Switch } from '@mantine/core';
 import { useState } from 'react';
-import { Position, POSITIONS, PreflopAction, RFI_CHARTS } from '@/consts';
+import { CARD_RANKS, Position, POSITIONS, PreflopAction, RFI_CHARTS } from '@/consts';
 import PreflopActionCard from '@/components/ConfigurationControls/components/PreflopActionCard';
 import _ from 'lodash';
-import { useToggle } from '@mantine/hooks';
+
+function createPreflopActionMatrix(): PreflopAction[][] {
+  const dimension = CARD_RANKS.length;
+  const array: any[][] = new Array(dimension);
+  for (let i = 0; i < dimension; i++) {
+    array[i] = new Array(dimension).fill(PreflopAction.Fold);
+  }
+  return array;
+}
 
 export function HomePage() {
   const [selectedPosition, setSelectedPosition] = useState<Position>(Position.BN);
   const [selectedPreflopAction, setSelectedPreflopAction] = useState<PreflopAction | null>(
     PreflopAction.Fold
   );
+  const [preflopMatrix, setPreflopMatrix] = useState<PreflopAction[][]>(
+    createPreflopActionMatrix()
+  );
   const [checkSolution, setCheckSolution] = useState<boolean | undefined>(false);
 
   const referenceChart = RFI_CHARTS[selectedPosition];
   const possibleActions = _.uniq(_.flatten(referenceChart || []));
+
+  const handleReset = () => {
+    setPreflopMatrix(createPreflopActionMatrix());
+  };
 
   return (
     <Center mih="100vh">
@@ -40,9 +55,14 @@ export function HomePage() {
               onChange={(e) => setCheckSolution(e.target.checked)}
             />
           )}
+          <Button onClick={handleReset} variant="outline">
+            Reset
+          </Button>
         </Stack>
         <PreflopChart
-          selectedPreflopAction={selectedPreflopAction}
+          preflopMatrix={preflopMatrix}
+          onChange={setPreflopMatrix}
+          selectedPreflopAction={selectedPreflopAction || PreflopAction.Fold}
           solution={checkSolution ? referenceChart : undefined}
         />
       </Group>
